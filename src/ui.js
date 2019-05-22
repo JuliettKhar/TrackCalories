@@ -1,5 +1,7 @@
+import {Store} from './store';
 class UI {
 	constructor() {
+		this.itemId = null;
 		this.itemName = document.querySelector('#item-name');
 		this.itemCalories = document.querySelector('#item-calories');
 		this.itemList = document.querySelector('#item-list');
@@ -16,6 +18,7 @@ class UI {
 	 this.itemList.insertAdjacentElement('beforeend', li);
 	}
 	clearFields() {
+		this.itemId = null;
 		this.itemName.value = '';
 		this.itemCalories.value = '';
 	}
@@ -24,6 +27,8 @@ class UI {
 		currentItems.forEach( item => item.remove())
 	}
 	fillForm(data) {
+			this.itemId = data.itemId;
+        console.log(this.itemId);
 			this.itemName.value = data.itemNameValue.textContent;
 			this.itemCalories.value = parseInt(data.itemCaloriesValue.textContent);
 
@@ -33,7 +38,9 @@ class UI {
 		return id;
 	}
 	deleteItem() {
-
+		Store.deleteTask(this.itemId);
+        document.querySelector('#'+this.itemId).remove();
+        this.itemId = null;
 	}
 
 }
