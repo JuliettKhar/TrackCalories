@@ -5,6 +5,7 @@ class UI {
 		this.itemName = document.querySelector('#item-name');
 		this.itemCalories = document.querySelector('#item-calories');
 		this.itemList = document.querySelector('#item-list');
+		this.total = document.querySelector('.total-calories');
 	}
 
 	addItem(data){
@@ -33,16 +34,16 @@ fillItem(elementId, data) {
 		this.itemName.value = '';
 		this.itemCalories.value = '';
 	}
+
 	clearAllList() {
 		const currentItems = [].slice.call(this.itemList.querySelectorAll('li'));
 		currentItems.forEach( item => item.remove())
 	}
+	
 	fillForm(data) {
 			this.itemId = data.itemId;
-        console.log(this.itemId);
 			this.itemName.value = data.itemNameValue.textContent;
 			this.itemCalories.value = parseInt(data.itemCaloriesValue.textContent);
-
 	}
 
 	getId(data) {
@@ -51,19 +52,27 @@ fillItem(elementId, data) {
 
 	deleteItem() {
 		const elem = document.getElementById(this.itemId);
-		console.log(this.itemId, elem);
 		Store.deleteTask(this.itemId);
 		elem.remove();
 	}
 
 	updateListItem() {
 		const item = {
-'id': this.itemId,
+				'id': this.itemId,
     'itemName': document.querySelector('#item-name').value,
     'itemCalories': document.querySelector('#item-calories').value
 		};
 		this.fillItem(this.itemId, item);
 		Store.updateTask(this.itemId, item);
+	}
+
+	addTotal(data) {
+		const calories = data;
+		const arrayNumbers = calories.map( item => parseInt(item.itemCalories));
+		const totalNumber = arrayNumbers.reduce( (resault, num) => {
+				return resault + num;
+		}, 0)
+		this.total.textContent = totalNumber;
 	}
 
 }

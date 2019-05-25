@@ -19,18 +19,13 @@ function findElements() {
     backBtn = document.querySelector('.back-btn');
 }
 
-
-//Store in local storage
-
-
 function getList() {
     const data = Store.checkStorage();
     data.forEach(elem => {
-
     	ui.addItem(elem);
     });
+    ui.addTotal(data);
 }
-
 
 function addItemToList(event) {
     const itemName = document.querySelector('#item-name').value;
@@ -46,6 +41,7 @@ function addItemToList(event) {
         ui.addItem(data);
         ui.clearFields();
         Store.storeTask(data);
+        addTotalCalories();
     }
     event.preventDefault();
 }
@@ -53,6 +49,7 @@ function addItemToList(event) {
 function clearList(event) {
     ui.clearAllList();
     Store.clearListFromStorage();
+    addTotalCalories();
     event.preventDefault();
 }
 
@@ -68,8 +65,6 @@ function hideBtns() {
     deleteMeal.style.display = 'none';
 }
 
-
-
 function changeItem(event) {
     const {target} = event;
     if (target.classList.contains('edit-item')) {
@@ -83,8 +78,6 @@ function changeItem(event) {
         }
         showBtns();
         ui.fillForm(data);
-       
-
     }
     event.preventDefault();
 }
@@ -92,13 +85,15 @@ function changeItem(event) {
 function updateList(event) {
     addItemToList(event);
     hideBtns();
+
 }
 
 function updateListItem(event) {
-hideBtns();
-ui.updateListItem();
+		hideBtns();
+		ui.updateListItem();
    	ui.clearFields();
     event.preventDefault(event);
+    addTotalCalories();
     return false;	
 }
 
@@ -107,6 +102,7 @@ function deleteListItem(event) {
     ui.deleteItem();
    	ui.clearFields();
     event.preventDefault(event);
+    addTotalCalories();
     return false;
 }
 
@@ -114,6 +110,13 @@ function backToList(event) {
     ui.clearFields();
     hideBtns();
     event.preventDefault(event);
+}
+
+function addTotalCalories() {
+	const data = Store.checkStorage();
+	console.log(data, 'addTotalCalories')
+	  ui.addTotal(data);
+
 }
 
 function subscribe(event) {
