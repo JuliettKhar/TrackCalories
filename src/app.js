@@ -26,15 +26,8 @@ function findElements() {
 function getList() {
     const data = Store.checkStorage();
     data.forEach(elem => {
-        const output = `
-		<li class="collection-item" id="${elem.id}">
-        <strong>${elem.itemName}: </strong> <em>${elem.itemCalories} Calories</em>
-        <a href="#" class="secondary-content">
-          <i class="edit-item fa fa-pencil"></i>
-        </a>
-      </li>
-      `
-        ul.innerHTML += output;
+
+    	ui.addItem(elem);
     });
 }
 
@@ -75,6 +68,8 @@ function hideBtns() {
     deleteMeal.style.display = 'none';
 }
 
+
+
 function changeItem(event) {
     const {target} = event;
     if (target.classList.contains('edit-item')) {
@@ -88,20 +83,31 @@ function changeItem(event) {
         }
         showBtns();
         ui.fillForm(data);
+       
+
     }
     event.preventDefault();
 }
 
-function updateList() {
+function updateList(event) {
     addItemToList(event);
     hideBtns();
 }
 
-function deleteListItem(event) {
-
-    ui.deleteItem();
-    hideBtns();
+function updateListItem(event) {
+hideBtns();
+ui.updateListItem();
+   	ui.clearFields();
     event.preventDefault(event);
+    return false;	
+}
+
+function deleteListItem(event) {
+    hideBtns();
+    ui.deleteItem();
+   	ui.clearFields();
+    event.preventDefault(event);
+    return false;
 }
 
 function backToList(event) {
@@ -114,7 +120,7 @@ function subscribe(event) {
     addMeal.addEventListener('click', addItemToList);
     clearAll.addEventListener('click', clearList);
     ul.addEventListener('click', changeItem);
-    updateMeal.addEventListener('click', updateList);
+    updateMeal.addEventListener('click', updateListItem);
     deleteMeal.addEventListener('click', deleteListItem);
     backBtn.addEventListener('click', backToList);
     document.addEventListener('DOMContentLoaded', getList);

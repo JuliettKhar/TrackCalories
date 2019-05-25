@@ -11,12 +11,23 @@ class UI {
 		const li = document.createElement('li');
 		li.className = 'collection-item';
 		li.id = `${data.id}`;
-		li.innerHTML = `<strong>${data.itemName}: </strong> <em>${data.itemCalories} Calories</em>
+		li.innerHTML = `<strong class="listItemName"></strong>:  
+						<em class="listItemCalories"></em> Calories
       <a href="#" class="secondary-content">
         <i class="edit-item fa fa-pencil"></i>
       </a>`;
 	 this.itemList.insertAdjacentElement('beforeend', li);
+	 this.fillItem(data.id, data);
 	}
+
+fillItem(elementId, data) {
+	console.log('#'+elementId+' .listItemName');
+	let listItemNameElement = document.querySelector('#'+elementId+' .listItemName');
+	let listItemCaloriesElement = document.querySelector('#'+elementId+' .listItemCalories');
+	listItemCaloriesElement.innerHTML = data.itemCalories;
+	listItemNameElement.innerHTML = data.itemName;
+}
+
 	clearFields() {
 		this.itemId = null;
 		this.itemName.value = '';
@@ -33,14 +44,26 @@ class UI {
 			this.itemCalories.value = parseInt(data.itemCaloriesValue.textContent);
 
 	}
+
 	getId(data) {
 		const id = data.itemId;
-		return id;
 	}
+
 	deleteItem() {
+		const elem = document.getElementById(this.itemId);
+		console.log(this.itemId, elem);
 		Store.deleteTask(this.itemId);
-        document.querySelector('#'+this.itemId).remove();
-        this.itemId = null;
+		elem.remove();
+	}
+
+	updateListItem() {
+		const item = {
+'id': this.itemId,
+    'itemName': document.querySelector('#item-name').value,
+    'itemCalories': document.querySelector('#item-calories').value
+		};
+		this.fillItem(this.itemId, item);
+		Store.updateTask(this.itemId, item);
 	}
 
 }

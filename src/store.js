@@ -25,6 +25,19 @@ class StoreClass {
         localStorage.setItem('items', JSON.stringify(items));
     }
 
+    updateTask(id, item) {
+        let items = this.checkStorage();
+
+        items.forEach((storegeItem,index) => {
+            if (storegeItem.id === id) {
+                items[index] = item;
+            }
+        });
+        console.log(items);
+
+        localStorage.setItem('items', JSON.stringify(items));
+    }
+
 
     deleteTask(id) {
 
